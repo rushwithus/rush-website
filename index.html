@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rush — Elevate Your Business</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E8180C;
+    --orange: #FF6B1A;
+    --black: #0A0A0A;
+    --white: #F5F5F0;
+    --gray: #1A1A1A;
+    --gray-light: #2A2A2A;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--red);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, width 0.2s, height 0.2s;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--orange);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.35s ease, width 0.2s, height 0.2s, opacity 0.2s;
+    transform: translate(-50%, -50%);
+    opacity: 0.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 48px;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(232,24,12,0.15);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.12em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--red); }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245,245,240,0.6);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--orange); }
+
+  .nav-cta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--red);
+    padding: 10px 24px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .nav-cta:hover { background: var(--orange); transform: scale(1.04); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 50%, rgba(232,24,12,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(255,107,26,0.07) 0%, transparent 60%);
+    z-index: 0;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,24,12,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,24,12,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 900px; }
+
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 12vw, 11rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero-title .line-red { color: var(--red); display: block; }
+  .hero-title .line-outline {
+    -webkit-text-stroke: 2px var(--white);
+    color: transparent;
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: rgba(245,245,240,0.65);
+    max-width: 520px;
+    line-height: 1.6;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-sub strong { color: var(--white); font-weight: 700; }
+
+  .hero-actions {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .btn-primary {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--red);
+    padding: 16px 40px;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    transition: transform 0.2s, background 0.2s;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  }
+  .btn-primary:hover { background: var(--orange); transform: translateY(-2px); }
+
+  .btn-secondary {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.7;
+    transition: opacity 0.2s, gap 0.2s;
+  }
+  .btn-secondary:hover { opacity: 1; gap: 14px; }
+  .btn-secondary::after { content: '→'; font-size: 1.1rem; }
+
+  .hero-ticker {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    background: var(--red);
+    padding: 12px 0;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .ticker-track {
+    display: flex;
+    gap: 0;
+    animation: ticker 20s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--white);
+    padding: 0 32px;
+    flex-shrink: 0;
+  }
+  .ticker-item span { color: rgba(255,255,255,0.4); margin: 0 16px; }
+
+  /* STATS */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat-item {
+    padding: 48px 48px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,245,240,0.5);
+  }
+
+  /* SECTION COMMONS */
+  section { padding: 100px 48px; }
+
+  .section-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-tag::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 2px;
+    background: var(--orange);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    margin-bottom: 24px;
+  }
+
+  /* ABOUT */
+  .about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .about-text p {
+    font-size: 1.1rem;
+    line-height: 1.75;
+    color: rgba(245,245,240,0.7);
+    margin-bottom: 20px;
+  }
+  .about-text p strong { color: var(--white); }
+
+  .about-visual {
+    position: relative;
+    height: 400px;
+  }
+  .about-card {
+    position: absolute;
+    background: var(--gray);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 32px;
+  }
+  .about-card-main {
+    top: 0; left: 0; right: 60px; bottom: 60px;
+    background: var(--gray);
+  }
+  .about-card-accent {
+    bottom: 0; right: 0;
+    width: 200px; height: 160px;
+    background: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .about-card-accent .big-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--white);
+    line-height: 1;
+  }
+  .about-card-accent .small-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+  .about-card-main-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .about-card-main-text {
+    font-size: 0.95rem;
+    color: rgba(245,245,240,0.5);
+    line-height: 1.6;
+  }
+
+  /* SERVICES */
+  .services-section { background: var(--gray); }
+  .services-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 64px;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .service-card {
+    background: var(--black);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    group: true;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--red);
+    transition: height 0.4s ease;
+  }
+  .service-card:hover::before { height: 100%; }
+  .service-card:hover { background: var(--gray-light); }
+
+  .service-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: rgba(232,24,12,0.15);
+    line-height: 1;
+    margin-bottom: 16px;
+    transition: color 0.3s;
+  }
+  .service-card:hover .service-number { color: rgba(232,24,12,0.4); }
+
+  .service-icon {
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .service-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .service-desc {
+    font-size: 0.9rem;
+    color: rgba(245,245,240,0.5);
+    line-height: 1.65;
+  }
+
+  /* HOW IT WORKS */
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+  }
+  .process-step {
+    padding: 48px 32px;
+    background: var(--gray);
+    position: relative;
+    overflow: hidden;
+  }
+  .process-step::after {
+    content: attr(data-step);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 8rem;
+    color: rgba(255,255,255,0.03);
+    position: absolute;
+    bottom: -20px;
+    right: -10px;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    color: var(--red);
+    letter-spacing: 0.2em;
+    margin-bottom: 16px;
+  }
+  .step-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+    color: var(--white);
+  }
+  .step-desc {
+    font-size: 0.88rem;
+    color: rgba(245,245,240,0.5);
+    line-height: 1.65;
+  }
+
+  /* CTA BAND */
+  .cta-band {
+    background: var(--red);
+    padding: 80px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .cta-band-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 0.95;
+    color: var(--white);
+    max-width: 600px;
+  }
+  .cta-band-title span {
+    -webkit-text-stroke: 2px var(--white);
+    color: transparent;
+  }
+  .btn-white {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    background: var(--white);
+    padding: 18px 48px;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.2s, background 0.2s;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+    white-space: nowrap;
+  }
+  .btn-white:hover { transform: scale(1.04); background: var(--black); color: var(--white); }
+
+  /* CONTACT */
+  .contact-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .contact-info p {
+    font-size: 1.05rem;
+    color: rgba(245,245,240,0.6);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  .contact-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .contact-item-icon {
+    width: 40px; height: 40px;
+    background: var(--gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .contact-item-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--white);
+  }
+  .contact-item-label {
+    font-size: 0.75rem;
+    color: rgba(245,245,240,0.4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .contact-form { display: flex; flex-direction: column; gap: 16px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-group label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,245,240,0.5);
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    background: var(--gray);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--white);
+    padding: 14px 16px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus { border-color: var(--red); }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .form-group select option { background: var(--gray); }
+
+  .btn-submit {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--red);
+    border: none;
+    padding: 18px 40px;
+    cursor: none;
+    transition: background 0.2s, transform 0.2s;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+    align-self: flex-start;
+  }
+  .btn-submit:hover { background: var(--orange); transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer {
+    background: var(--gray);
+    padding: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.12em;
+    color: var(--white);
+  }
+  .footer-logo span { color: var(--red); }
+  .footer-tagline {
+    font-size: 0.8rem;
+    color: rgba(245,245,240,0.4);
+    letter-spacing: 0.1em;
+  }
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .footer-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,245,240,0.4);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--orange); }
+  .footer-copy {
+    font-size: 0.78rem;
+    color: rgba(245,245,240,0.25);
+    letter-spacing: 0.05em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 72px 24px; }
+    .hero { padding: 100px 24px 80px; }
+    .about { grid-template-columns: 1fr; gap: 48px; }
+    .about-visual { height: 280px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .stats { grid-template-columns: 1fr; }
+    .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .contact-section { grid-template-columns: 1fr; gap: 48px; }
+    .form-row { grid-template-columns: 1fr; }
+    .cta-band { flex-direction: column; padding: 60px 24px; }
+    footer { flex-direction: column; text-align: center; padding: 40px 24px; }
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">RUSH<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">How It Works</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get Started</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Texas-Based B2B Agency</div>
+    <h1 class="hero-title">
+      <span>Elevate</span>
+      <span class="line-red">Your Business.</span>
+      <span class="line-outline">Now.</span>
+    </h1>
+    <p class="hero-sub">
+      Rush is a <strong>hands-on growth agency</strong> for local and growing businesses.
+      We go in person, build real relationships, and deliver results that speak for themselves.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Work With Us</a>
+      <a href="#services" class="btn-secondary">See What We Do</a>
+    </div>
+  </div>
+
+  <div class="hero-ticker">
+    <div class="ticker-track">
+      <span class="ticker-item">Website Building <span>✦</span></span>
+      <span class="ticker-item">AI Automation <span>✦</span></span>
+      <span class="ticker-item">Social Media <span>✦</span></span>
+      <span class="ticker-item">Marketing <span>✦</span></span>
+      <span class="ticker-item">Photography <span>✦</span></span>
+      <span class="ticker-item">Business Growth <span>✦</span></span>
+      <span class="ticker-item">Workflows <span>✦</span></span>
+      <span class="ticker-item">Local Texas Businesses <span>✦</span></span>
+      <span class="ticker-item">Website Building <span>✦</span></span>
+      <span class="ticker-item">AI Automation <span>✦</span></span>
+      <span class="ticker-item">Social Media <span>✦</span></span>
+      <span class="ticker-item">Marketing <span>✦</span></span>
+      <span class="ticker-item">Photography <span>✦</span></span>
+      <span class="ticker-item">Business Growth <span>✦</span></span>
+      <span class="ticker-item">Workflows <span>✦</span></span>
+      <span class="ticker-item">Local Texas Businesses <span>✦</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item reveal" style="animation-delay:0.1s">
+    <div class="stat-number">100%</div>
+    <div class="stat-label">In-Person Approach</div>
+  </div>
+  <div class="stat-item reveal" style="animation-delay:0.2s">
+    <div class="stat-number">6+</div>
+    <div class="stat-label">Services Offered</div>
+  </div>
+  <div class="stat-item reveal" style="animation-delay:0.3s">
+    <div class="stat-number">$0</div>
+    <div class="stat-label">To Get Started</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about">
+    <div class="about-text">
+      <div class="section-tag reveal">Who We Are</div>
+      <h2 class="section-title reveal">Built Different.<br>Built For You.</h2>
+      <p class="reveal">
+        Rush isn't a faceless agency. We're <strong>builders who show up in person</strong>, understand your business, and bring real solutions — not templates and empty promises.
+      </p>
+      <p class="reveal">
+        We start by earning your trust. That means we <strong>work for free first</strong>, prove our value, and then build a relationship worth investing in. No contracts before results.
+      </p>
+      <p class="reveal">
+        Founded in Texas. Built for Texas businesses. We're young, we're hungry, and we know exactly how to make your business look and perform like it belongs at the top.
+      </p>
+    </div>
+    <div class="about-visual reveal">
+      <div class="about-card about-card-main">
+        <div class="about-card-main-title">The Rush Way</div>
+        <div class="about-card-main-text">We walk through your door, understand your goals, and build something real. No cold emails. No generic packages. Just results-driven work from people who actually care.</div>
+      </div>
+      <div class="about-card about-card-accent">
+        <div class="big-text">TX</div>
+        <div class="small-text">Based & Built</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="services-header">
+    <div>
+      <div class="section-tag reveal">What We Do</div>
+      <h2 class="section-title reveal">Services That<br>Move the Needle.</h2>
+    </div>
+    <a href="#contact" class="btn-primary reveal">Start Free</a>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-number">01</div>
+      <span class="service-icon">🌐</span>
+      <div class="service-name">Website Building</div>
+      <div class="service-desc">Custom, fast, mobile-ready websites that convert visitors into customers. Built with AI-assisted tools and real design sensibility.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-number">02</div>
+      <span class="service-icon">📱</span>
+      <div class="service-name">Social Media Setup</div>
+      <div class="service-desc">Full account setup, content strategy, and brand voice — built to grow your following and keep customers coming back.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-number">03</div>
+      <span class="service-icon">📸</span>
+      <div class="service-name">Photography & Media</div>
+      <div class="service-desc">Professional content that makes your business look the part. Product shots, team photos, brand imagery — done right.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-number">04</div>
+      <span class="service-icon">🤖</span>
+      <div class="service-name">AI Automation</div>
+      <div class="service-desc">Automate the repetitive work slowing you down. From customer follow-ups to internal workflows — we deploy AI that actually works.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-number">05</div>
+      <span class="service-icon">📣</span>
+      <div class="service-name">Marketing & Advertising</div>
+      <div class="service-desc">Targeted campaigns across digital channels designed to bring new customers through your door and keep them coming back.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-number">06</div>
+      <span class="service-icon">⚙️</span>
+      <div class="service-name">Business Workflows</div>
+      <div class="service-desc">We map, streamline, and optimize the way your business operates so you spend less time on busywork and more time growing.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-tag reveal">How It Works</div>
+  <h2 class="section-title reveal">Four Steps.<br>Real Results.</h2>
+  <div class="process-steps">
+    <div class="process-step reveal" data-step="1">
+      <div class="step-num">Step 01</div>
+      <div class="step-title">We Show Up</div>
+      <div class="step-desc">We come to you in person, learn your business, and figure out exactly where the opportunities are.</div>
+    </div>
+    <div class="process-step reveal" data-step="2">
+      <div class="step-num">Step 02</div>
+      <div class="step-title">We Build for Free</div>
+      <div class="step-desc">We start with a free deliverable — a website, a social page, a workflow — so you can see the quality before spending a dollar.</div>
+    </div>
+    <div class="process-step reveal" data-step="3">
+      <div class="step-num">Step 03</div>
+      <div class="step-title">You See Results</div>
+      <div class="step-desc">The work speaks for itself. More customers, better presence, smoother operations — results you can measure.</div>
+    </div>
+    <div class="process-step reveal" data-step="4">
+      <div class="step-num">Step 04</div>
+      <div class="step-title">We Scale Together</div>
+      <div class="step-desc">Once trust is built, we develop a full growth strategy together and scale what's working.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <h2 class="cta-band-title">Ready to <span>Elevate</span> Your Business?</h2>
+  <a href="#contact" class="btn-white">Get Started Free</a>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-section">
+    <div class="contact-info">
+      <div class="section-tag reveal">Contact</div>
+      <h2 class="section-title reveal">Let's Talk.<br>No Pressure.</h2>
+      <p class="reveal">Tell us about your business. We'll reach out, come to you, and show you exactly what we can do — at zero cost to start.</p>
+      <div class="contact-detail reveal">
+        <div class="contact-item">
+          <div class="contact-item-icon">📍</div>
+          <div>
+            <div class="contact-item-label">Location</div>
+            <div class="contact-item-text">Austin, Texas</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">✉️</div>
+          <div>
+            <div class="contact-item-label">Email</div>
+            <div class="contact-item-text">hello@rushwithus.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="John Smith" required>
+        </div>
+        <div class="form-group">
+          <label>Business Name</label>
+          <input type="text" placeholder="Smith's BBQ" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="john@yourbusiness.com" required>
+      </div>
+      <div class="form-group">
+        <label>What do you need?</label>
+        <select>
+          <option value="">Select a service...</option>
+          <option>Website Building</option>
+          <option>Social Media Setup</option>
+          <option>Photography & Media</option>
+          <option>AI Automation</option>
+          <option>Marketing & Advertising</option>
+          <option>Business Workflows</option>
+          <option>Not sure yet — let's talk</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tell us about your business</label>
+        <textarea placeholder="What does your business do? What's the biggest challenge you're facing right now?"></textarea>
+      </div>
+      <button type="submit" class="btn-submit">Send Message →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">RUSH<span>.</span></div>
+    <div class="footer-tagline">Elevate Your Business — Austin, TX</div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Rush. All rights reserved.</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(2)';
+      ring.style.opacity = '0';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+      ring.style.opacity = '0.6';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-submit');
+    btn.textContent = 'Message Sent ✓';
+    btn.style.background = '#22c55e';
+    setTimeout(() => {
+      btn.textContent = 'Send Message →';
+      btn.style.background = '';
+      e.target.reset();
+    }, 3000);
+  }
+</script>
+</body>
+</html>

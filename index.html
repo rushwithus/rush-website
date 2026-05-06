@@ -997,14 +997,14 @@
     const btn = e.target.querySelector('.btn-submit');
     const form = e.target;
 
-    const data = {
-      name: form.querySelectorAll('input')[0].value,
-      business: form.querySelectorAll('input')[1].value,
-      email: form.querySelectorAll('input')[2].value,
-      service: form.querySelector('select').value,
-      message: form.querySelector('textarea').value,
-      submitted_at: new Date().toLocaleString()
-    };
+    const name = form.querySelectorAll('input')[0].value;
+    const business = form.querySelectorAll('input')[1].value;
+    const email = form.querySelectorAll('input')[2].value;
+    const service = form.querySelector('select').value;
+    const message = form.querySelector('textarea').value;
+    const submitted_at = new Date().toLocaleString();
+
+    const formatted = `NEW RUSH LEAD\n\nName: ${name}\nBusiness: ${business}\nEmail: ${email}\nService: ${service}\nMessage: ${message}\nSubmitted: ${submitted_at}`;
 
     btn.textContent = 'Sending...';
     btn.disabled = true;
@@ -1014,7 +1014,7 @@
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify({ value: formatted })
       });
       btn.textContent = 'Message Sent ✓';
       btn.style.background = '#22c55e';

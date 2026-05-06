@@ -1013,8 +1013,8 @@
       await fetch('https://hook.us2.make.com/68xc8hjgu7x1yf8n5wajv446zsb4d97c', {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value: formatted })
+        headers: { 'Content-Type': 'text/plain' },
+        body: formatted
       });
       btn.textContent = 'Message Sent ✓';
       btn.style.background = '#22c55e';

@@ -26,30 +26,7 @@
     color: var(--white);
     font-family: 'Barlow', sans-serif;
     overflow-x: hidden;
-    cursor: none;
-  }
-
-  /* Custom cursor */
-  .cursor {
-    width: 12px; height: 12px;
-    background: var(--red);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.15s ease, width 0.2s, height 0.2s;
-    transform: translate(-50%, -50%);
-  }
-  .cursor-ring {
-    width: 36px; height: 36px;
-    border: 1.5px solid var(--orange);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9998;
-    transition: transform 0.35s ease, width 0.2s, height 0.2s, opacity 0.2s;
-    transform: translate(-50%, -50%);
-    opacity: 0.6;
+    cursor: default;
   }
 
   /* NAV */
@@ -598,7 +575,7 @@
     background: var(--red);
     border: none;
     padding: 18px 40px;
-    cursor: none;
+    cursor: default;
     transition: background 0.2s, transform 0.2s;
     clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
     align-self: flex-start;
@@ -692,8 +669,8 @@
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<!-- PARTICLES -->
+<canvas id="particles" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.4;"></canvas>
 
 <!-- NAV -->
 <nav>
@@ -884,7 +861,7 @@
           <div class="contact-item-icon">📍</div>
           <div>
             <div class="contact-item-label">Location</div>
-            <div class="contact-item-text">Austin, Texas</div>
+            <div class="contact-item-text">Houston, Texas</div>
           </div>
         </div>
         <div class="contact-item">
@@ -937,7 +914,7 @@
 <footer>
   <div>
     <div class="footer-logo">RUSH<span>.</span></div>
-    <div class="footer-tagline">Elevate Your Business — Austin, TX</div>
+    <div class="footer-tagline">Elevate Your Business — Houston, TX</div>
   </div>
   <ul class="footer-links">
     <li><a href="#about">About</a></li>
@@ -949,36 +926,79 @@
 </footer>
 
 <script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-
-  document.addEventListener('mousemove', e => {
-    mouseX = e.clientX; mouseY = e.clientY;
-    cursor.style.left = mouseX + 'px';
-    cursor.style.top = mouseY + 'px';
+  // Particle background
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   });
 
-  function animateRing() {
-    ringX += (mouseX - ringX) * 0.12;
-    ringY += (mouseY - ringY) * 0.12;
-    ring.style.left = ringX + 'px';
-    ring.style.top = ringY + 'px';
-    requestAnimationFrame(animateRing);
+  const particles = [];
+  const count = 80;
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      size: Math.random() * 2 + 0.5,
+      opacity: Math.random() * 0.6 + 0.2
+    });
   }
-  animateRing();
 
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.transform = 'translate(-50%, -50%) scale(2)';
-      ring.style.opacity = '0';
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(124,58,237,${p.opacity})`;
+      ctx.fill();
     });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-      ring.style.opacity = '0.6';
+
+    // Draw lines between nearby particles and mouse
+    particles.forEach((p, i) => {
+      particles.slice(i + 1).forEach(p2 => {
+        const dx = p.x - p2.x;
+        const dy = p.y - p2.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `rgba(124,58,237,${0.15 * (1 - dist / 120)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      });
+
+      // Connect to mouse
+      const dx = p.x - mouse.x;
+      const dy = p.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(mouse.x, mouse.y);
+        ctx.strokeStyle = `rgba(168,85,247,${0.3 * (1 - dist / 150)})`;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
     });
-  });
+
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
 
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');

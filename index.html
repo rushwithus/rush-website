@@ -7,12 +7,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --red: #E8180C;
-    --orange: #FF6B1A;
-    --black: #0A0A0A;
-    --white: #F5F5F0;
-    --gray: #1A1A1A;
-    --gray-light: #2A2A2A;
+    --red: #7C3AED;
+    --orange: #A855F7;
+    --black: #080808;
+    --white: #F2F2EE;
+    --gray: #141414;
+    --gray-light: #1E1E1E;
+    --purple-glow: rgba(124,58,237,0.15);
+    --purple-subtle: rgba(168,85,247,0.08);
   }
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -61,7 +63,7 @@
     padding: 20px 48px;
     background: rgba(10,10,10,0.85);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(232,24,12,0.15);
+    border-bottom: 1px solid rgba(124,58,237,0.2);
   }
 
   .nav-logo {
@@ -120,8 +122,8 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 60% 50% at 70% 50%, rgba(232,24,12,0.12) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(255,107,26,0.07) 0%, transparent 60%);
+      radial-gradient(ellipse 60% 50% at 70% 50%, var(--purple-glow) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, var(--purple-subtle) 0%, transparent 60%);
     z-index: 0;
   }
 
@@ -129,8 +131,8 @@
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(232,24,12,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232,24,12,0.04) 1px, transparent 1px);
+      linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px);
     background-size: 60px 60px;
     z-index: 0;
   }
@@ -159,12 +161,8 @@
     animation: fadeUp 0.8s ease 0.4s forwards;
   }
 
-  .hero-title .line-red { color: var(--red); display: block; }
-  .hero-title .line-outline {
-    -webkit-text-stroke: 2px var(--white);
-    color: transparent;
-    display: block;
-  }
+  .hero-title .line-purple { color: var(--red); display: block; }
+  .hero-title span { display: block; color: var(--white); }
 
   .hero-sub {
     font-size: 1.2rem;
@@ -412,18 +410,13 @@
   .service-number {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 4rem;
-    color: rgba(232,24,12,0.15);
+    color: rgba(124,58,237,0.15);
     line-height: 1;
     margin-bottom: 16px;
     transition: color 0.3s;
   }
-  .service-card:hover .service-number { color: rgba(232,24,12,0.4); }
+  .service-card:hover .service-number { color: rgba(124,58,237,0.4); }
 
-  .service-icon {
-    font-size: 1.8rem;
-    margin-bottom: 16px;
-    display: block;
-  }
   .service-name {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 1.4rem;
@@ -501,10 +494,6 @@
     line-height: 0.95;
     color: var(--white);
     max-width: 600px;
-  }
-  .cta-band-title span {
-    -webkit-text-stroke: 2px var(--white);
-    color: transparent;
   }
   .btn-white {
     font-family: 'Barlow Condensed', sans-serif;
@@ -726,12 +715,12 @@
     <div class="hero-eyebrow">Texas-Based B2B Agency</div>
     <h1 class="hero-title">
       <span>Elevate</span>
-      <span class="line-red">Your Business.</span>
-      <span class="line-outline">Now.</span>
+      <span class="line-purple">Your Business.</span>
+      <span>Now.</span>
     </h1>
     <p class="hero-sub">
       Rush is a <strong>hands-on growth agency</strong> for local and growing businesses.
-      We go in person, build real relationships, and deliver results that speak for themselves.
+      We show up in person, learn your business like it's our own, and build things that actually move the needle.
     </p>
     <div class="hero-actions">
       <a href="#contact" class="btn-primary">Work With Us</a>
@@ -810,55 +799,49 @@
 <section class="services-section" id="services">
   <div class="services-header">
     <div>
-      <div class="section-tag reveal">What We Do</div>
-      <h2 class="section-title reveal">Services That<br>Move the Needle.</h2>
+      <div class="section-tag reveal">Our Services — What We Offer</div>
+      <h2 class="section-title reveal">Six Ways We<br>Grow Your Business.</h2>
     </div>
     <a href="#contact" class="btn-primary reveal">Start Free</a>
   </div>
   <div class="services-grid">
     <div class="service-card reveal">
       <div class="service-number">01</div>
-      <span class="service-icon">🌐</span>
       <div class="service-name">Website Building</div>
-      <div class="service-desc">Custom, fast, mobile-ready websites that convert visitors into customers. Built with AI-assisted tools and real design sensibility.</div>
+      <div class="service-desc">Custom, fast, mobile-ready websites built to convert. We handle design, copy, and launch — you focus on running your business.</div>
     </div>
     <div class="service-card reveal">
       <div class="service-number">02</div>
-      <span class="service-icon">📱</span>
       <div class="service-name">Social Media Setup</div>
-      <div class="service-desc">Full account setup, content strategy, and brand voice — built to grow your following and keep customers coming back.</div>
+      <div class="service-desc">We build your presence from the ground up — account setup, brand voice, content strategy — so your business shows up where customers are looking.</div>
     </div>
     <div class="service-card reveal">
       <div class="service-number">03</div>
-      <span class="service-icon">📸</span>
       <div class="service-name">Photography & Media</div>
-      <div class="service-desc">Professional content that makes your business look the part. Product shots, team photos, brand imagery — done right.</div>
+      <div class="service-desc">Professional content that makes your business look the part. Product shots, team photos, brand imagery — created with care and intention.</div>
     </div>
     <div class="service-card reveal">
       <div class="service-number">04</div>
-      <span class="service-icon">🤖</span>
       <div class="service-name">AI Automation</div>
-      <div class="service-desc">Automate the repetitive work slowing you down. From customer follow-ups to internal workflows — we deploy AI that actually works.</div>
+      <div class="service-desc">We identify what's slowing you down and automate it — customer follow-ups, scheduling, internal workflows. Less friction, more growth.</div>
     </div>
     <div class="service-card reveal">
       <div class="service-number">05</div>
-      <span class="service-icon">📣</span>
       <div class="service-name">Marketing & Advertising</div>
-      <div class="service-desc">Targeted campaigns across digital channels designed to bring new customers through your door and keep them coming back.</div>
+      <div class="service-desc">Targeted campaigns built around your specific customers — not generic templates. We measure what works and double down on it.</div>
     </div>
     <div class="service-card reveal">
       <div class="service-number">06</div>
-      <span class="service-icon">⚙️</span>
       <div class="service-name">Business Workflows</div>
-      <div class="service-desc">We map, streamline, and optimize the way your business operates so you spend less time on busywork and more time growing.</div>
+      <div class="service-desc">We sit down with you, map how your business actually runs, and help you streamline it. Cleaner operations, more time for what matters.</div>
     </div>
   </div>
 </section>
 
 <!-- PROCESS -->
 <section id="process">
-  <div class="section-tag reveal">How It Works</div>
-  <h2 class="section-title reveal">Four Steps.<br>Real Results.</h2>
+  <div class="section-tag reveal">Our Process — How We Work</div>
+  <h2 class="section-title reveal">From First Hello<br>to Real Results.</h2>
   <div class="process-steps">
     <div class="process-step reveal" data-step="1">
       <div class="step-num">Step 01</div>
@@ -885,7 +868,7 @@
 
 <!-- CTA BAND -->
 <div class="cta-band">
-  <h2 class="cta-band-title">Ready to <span>Elevate</span> Your Business?</h2>
+  <h2 class="cta-band-title">Ready to Grow Your Business?</h2>
   <a href="#contact" class="btn-white">Get Started Free</a>
 </div>
 
@@ -1009,16 +992,43 @@
   reveals.forEach(el => observer.observe(el));
 
   // Form submit
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const btn = e.target.querySelector('.btn-submit');
-    btn.textContent = 'Message Sent ✓';
-    btn.style.background = '#22c55e';
-    setTimeout(() => {
-      btn.textContent = 'Send Message →';
-      btn.style.background = '';
-      e.target.reset();
-    }, 3000);
+    const form = e.target;
+
+    const data = {
+      name: form.querySelectorAll('input')[0].value,
+      business: form.querySelectorAll('input')[1].value,
+      email: form.querySelectorAll('input')[2].value,
+      service: form.querySelector('select').value,
+      message: form.querySelector('textarea').value,
+      submitted_at: new Date().toLocaleString()
+    };
+
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    try {
+      await fetch('https://hook.us2.make.com/68xc8hjgu7x1yf8n5wajv446zsb4d97c', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      btn.textContent = 'Message Sent ✓';
+      btn.style.background = '#22c55e';
+      form.reset();
+    } catch (err) {
+      btn.textContent = 'Something went wrong — try again';
+      btn.style.background = '#ef4444';
+    } finally {
+      setTimeout(() => {
+        btn.textContent = 'Send Message →';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 4000);
+    }
   }
 </script>
 </body>

@@ -1075,7 +1075,7 @@
     const message = form.querySelector('textarea').value;
     const submitted_at = new Date().toLocaleString();
 
-    const formatted = `Name: ${name}\nBusiness: ${business}\nEmail: ${email}\nServices: ${service}\nMessage: ${message}\nSubmitted: ${submitted_at}`;
+    const payload = { name, business, email, services: service, message, submitted_at };
 
     btn.textContent = 'Sending...';
     btn.disabled = true;
@@ -1084,8 +1084,8 @@
       await fetch('https://hook.us2.make.com/68xc8hjgu7x1yf8n5wajv446zsb4d97c', {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: formatted
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
       btn.textContent = 'Message Sent ✓';
       btn.style.background = '#22c55e';

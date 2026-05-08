@@ -565,6 +565,38 @@
   .form-group textarea { resize: vertical; min-height: 120px; }
   .form-group select option { background: var(--gray); }
 
+  .checkbox-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 16px;
+    background: var(--gray);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.88rem;
+    color: rgba(245,245,240,0.7);
+    cursor: pointer;
+    transition: color 0.2s;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+  .checkbox-item:hover { color: var(--white); }
+  .checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--red);
+    cursor: pointer;
+    flex-shrink: 0;
+    background: var(--gray);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 0;
+  }
+
   .btn-submit {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 1rem;
@@ -575,7 +607,7 @@
     background: var(--red);
     border: none;
     padding: 18px 40px;
-    cursor: default;
+    cursor: pointer;
     transition: background 0.2s, transform 0.2s;
     clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
     align-self: flex-start;
@@ -889,17 +921,16 @@
         <input type="email" placeholder="john@yourbusiness.com" required>
       </div>
       <div class="form-group">
-        <label>What do you need?</label>
-        <select>
-          <option value="">Select a service...</option>
-          <option>Website Building</option>
-          <option>Social Media Setup</option>
-          <option>Photography & Media</option>
-          <option>AI Automation</option>
-          <option>Marketing & Advertising</option>
-          <option>Business Workflows</option>
-          <option>Not sure yet — let's talk</option>
-        </select>
+        <label>What do you need? (Select all that apply)</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item"><input type="checkbox" value="Website Building"> Website Building</label>
+          <label class="checkbox-item"><input type="checkbox" value="Social Media Setup"> Social Media Setup</label>
+          <label class="checkbox-item"><input type="checkbox" value="Photography & Media"> Photography & Media</label>
+          <label class="checkbox-item"><input type="checkbox" value="AI Automation"> AI Automation</label>
+          <label class="checkbox-item"><input type="checkbox" value="Marketing & Advertising"> Marketing & Advertising</label>
+          <label class="checkbox-item"><input type="checkbox" value="Business Workflows"> Business Workflows</label>
+          <label class="checkbox-item"><input type="checkbox" value="Not sure yet"> Not sure yet — let's talk</label>
+        </div>
       </div>
       <div class="form-group">
         <label>Tell us about your business</label>
@@ -1017,14 +1048,15 @@
     const btn = e.target.querySelector('.btn-submit');
     const form = e.target;
 
-    const name = form.querySelectorAll('input')[0].value;
-    const business = form.querySelectorAll('input')[1].value;
-    const email = form.querySelectorAll('input')[2].value;
-    const service = form.querySelector('select').value;
+    const name = form.querySelectorAll('input[type="text"]')[0].value;
+    const business = form.querySelectorAll('input[type="text"]')[1].value;
+    const email = form.querySelector('input[type="email"]').value;
+    const checked = [...form.querySelectorAll('input[type="checkbox"]:checked')].map(c => c.value);
+    const service = checked.length > 0 ? checked.join(', ') : 'None selected';
     const message = form.querySelector('textarea').value;
     const submitted_at = new Date().toLocaleString();
 
-const formatted = `Name: ${name}\nBusiness: ${business}\nEmail: ${email}\nService: ${service}\nMessage: ${message}\nSubmitted: ${submitted_at}`;
+    const formatted = `Name: ${name}\nBusiness: ${business}\nEmail: ${email}\nServices: ${service}\nMessage: ${message}\nSubmitted: ${submitted_at}`;
 
     btn.textContent = 'Sending...';
     btn.disabled = true;
